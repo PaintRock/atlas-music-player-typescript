@@ -1,9 +1,23 @@
 import React from 'react';
+import { formatDuration } from '../utils/formatTime';
+
+interface PlayListItemsProps {
+    id: string;
+    title: string;
+    artist: string;
+    duration: number;
+    onClick?: () => void;
+    className?: string;
+}
+
+
+
+
 
 export default function PlayListItem({ 
-    title ="Song Title",
-    artist = "Artist Name",
-    duration = "3:45",
+    title,
+    artist,
+    duration,
     onClick, 
     className = ""
 }) {
@@ -16,7 +30,7 @@ export default function PlayListItem({
               <span className="text-lg font-bold text-gray-900">{title}</span>
                 <span className="text-md text-gray-600">{artist}</span>
             </div>
-            <span className="text-md text-gray-600">{duration}</span>
+            <span className="text-md text-gray-600">{formatDuration(duration)}</span>
         </div>
         </div>
     );
