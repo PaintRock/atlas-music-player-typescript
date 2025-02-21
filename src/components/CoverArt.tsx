@@ -11,6 +11,10 @@ export default function CoverArt({ song }: CoverArtProps) {
 
     useEffect(() => {
         if (song?.id) {
+            console.log('Current song:', song);  // Add this to see the song data
+
+            console.log('Cover URL:', song.cover);  // Add this to see the cover URL
+
             fetch(`http://localhost:5173/api/v1/lyrics/${song.id}`)
                 .then(response => response.json())
                 .then(data => setLyrics(data.lyrics))
@@ -20,7 +24,7 @@ export default function CoverArt({ song }: CoverArtProps) {
 
     if (!song) {
         return (
-            <div className="w-full h-full sm:w-1/2 sm:h-1/2 bg-eucalyptus-500 rounded-lg overflow-hidden">
+            <div className="flex w-full h-96 bg-gray-900 rounded-lg overflow-hidden">
                 <img
                     src="/api/placeholder/256/256"
                     alt="Big Box"
@@ -32,7 +36,7 @@ export default function CoverArt({ song }: CoverArtProps) {
 
     return (
         <div 
-            className="w-full h-full sm:w-1/2 sm:h-1/2 bg-gray-200 rounded-lg overflow-hidden relative"
+            className="w-full h-96 rounded-lg overflow-hidden relative"
             onMouseEnter={() => setShowLyrics(true)}
             onMouseLeave={() => setShowLyrics(false)}
         >

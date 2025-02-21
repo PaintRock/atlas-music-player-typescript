@@ -8,7 +8,6 @@ export default function MusicPlayer() {
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
 
   useEffect(() => {
-    // Updated to correct endpoint
     fetch('http://localhost:5173/api/v1/playlist')
       .then(response => {
         if (!response.ok) {
@@ -16,11 +15,12 @@ export default function MusicPlayer() {
         }
         return response.json();
       })
-      .then(data => {
+      .then(async (data) => {
         console.log('Playlist data:', data);
         setSongs(data);
         if (data.length > 0) {
-          setCurrentSong(data[0]);
+          const fullDetails = await fetchSongDetails(data[0].id);
+          setCurrentSong(fullDetails);
         }
       })
       .catch(error => console.error('Error fetching playlist:', error));
@@ -36,6 +36,10 @@ export default function MusicPlayer() {
       console.error('Error fetching song details:', error);
     }
   };
+  const handleSongSelect = async (song: Song) => {
+    const fullDetails = await fetchSongDetails(song.id);
+    setCurrentSong(fullDetails);
+  };
 
   return ( 
     <div className="w-full p-8">
@@ -49,7 +53,7 @@ export default function MusicPlayer() {
           <PlayList
             songs={songs}
             currentSong={currentSong}
-            onSongSelect={setCurrentSong}
+            onSongSelect={handleSongSelect}
           />
         </div>
       </div>
