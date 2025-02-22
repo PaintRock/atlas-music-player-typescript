@@ -6,7 +6,11 @@ import { Song } from '../types/song';
 export default function MusicPlayer() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
+  const handlePlayPause = () => {
+    setIsPlaying(!isPlaying);
+  };
   useEffect(() => {
     fetch('http://localhost:5173/api/v1/playlist')
       .then(response => {
@@ -47,6 +51,8 @@ export default function MusicPlayer() {
         <div className="border rounded-lg p-6 bg-white shadow-md">
           <CurrentlyPlaying
             song={currentSong}
+            isPlaying={isPlaying}
+            onPlayPause={handlePlayPause}
           />
         </div>
         <div className="border rounded-lg p-6 bg-white shadow-md">

@@ -8,14 +8,27 @@ import VolumeControls from './VolumeControls';
 
 interface CurrentlyPlayingProps {
     song: Song | null;
+    isPlaying: boolean;
+    onPlayPause: () => void;
 }
 
-export default function CurrentlyPlaying({ song }: CurrentlyPlayingProps) {
+export default function CurrentlyPlaying({ song, isPlaying, onPlayPause }: CurrentlyPlayingProps) {
     return (
     <div className= "flex flex-col gap-6">
         <CoverArt song={song} />
         {song && <SongTitle title={song.title}  artist={song.artist} />}
-        <PlayControls />
+        <PlayControls 
+          isPlaying={isPlaying}
+          onPlayPause={onPlayPause}
+          isFirstSong={false}
+          isLastSong={false}
+          onPrevious={() => {}}
+          onNext={() => {}}
+          playbackSpeed={1}
+          onSpeedChange={() => {}}
+          isShuffled={false}
+          onShuffleToggle={() => {}}
+        />
         <VolumeControls />
         </div>
 );
