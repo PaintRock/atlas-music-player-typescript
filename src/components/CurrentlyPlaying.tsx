@@ -10,9 +10,29 @@ interface CurrentlyPlayingProps {
     song: Song | null;
     isPlaying: boolean;
     onPlayPause: () => void;
+    isFirstSong: boolean;
+    isLastSong: boolean;
+    onPrevious: () => void;
+    onNext: () => void;
+    volume: number;
+    onVolumeChange: (volume: number) => void;
+    playbackSpeed: 0.5 | 1 | 2;
+    onSpeedChange: (speed: 0.5 | 1 | 2) => void;
 }
 
-export default function CurrentlyPlaying({ song, isPlaying, onPlayPause }: CurrentlyPlayingProps) {
+export default function CurrentlyPlaying({ 
+  song, 
+  isPlaying, 
+  onPlayPause,
+  isFirstSong,
+  isLastSong,
+  onNext,
+  onPrevious,
+  volume,
+  onVolumeChange,
+  playbackSpeed,
+  onSpeedChange
+ }: CurrentlyPlayingProps) {
     return (
     <div className= "flex flex-col gap-6">
         <CoverArt song={song} />
@@ -20,16 +40,19 @@ export default function CurrentlyPlaying({ song, isPlaying, onPlayPause }: Curre
         <PlayControls 
           isPlaying={isPlaying}
           onPlayPause={onPlayPause}
-          isFirstSong={false}
-          isLastSong={false}
-          onPrevious={() => {}}
-          onNext={() => {}}
-          playbackSpeed={1}
-          onSpeedChange={() => {}}
+          isFirstSong={isFirstSong}
+          isLastSong={isLastSong}
+          onPrevious={onPrevious}
+          onNext={onNext} 
+          playbackSpeed={playbackSpeed}
+          onSpeedChange={onSpeedChange}
           isShuffled={false}
           onShuffleToggle={() => {}}
         />
-        <VolumeControls />
+        <VolumeControls 
+          volume={volume}
+          onVolumeChange={onVolumeChange}
+          />
         </div>
 );
 }

@@ -7,10 +7,43 @@ export default function MusicPlayer() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [volume, setVolume] = useState(50);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [isShuffled, setIsShuffled] = useState(false);
+  
+  
+  const handleSpeedChange = (newSpeed: 0.5 | 1 | 2) => {
+    setPlaybackSpeed(newSpeed);
+  };
+  
+  const handleVolumeChange = (newVolume: number) => {
+    setVolume(newVolume);
+  };
+
+  const handlePrevious = async () => {
+    if (currentIndex > 0) {
+      const prevIndex = currentIndex - 1;
+      const prevSong = songs[prevIndex];
+      const fullDetails = await fetchSongDetails(prevSong.id);
+      setCurrentSong(fullDetails);
+      setCurrentIndex(prevIndex);
+    }
+  };
+  const handleNext = async () => {
+    if (currentIndex < songs.length - 1) {
+      const nextIndex = currentIndex + 1;
+      const nextSong = songs[nextIndex];
+      const fullDetails = await fetchSongDetails(nextSong.id);
+      setCurrentSong(fullDetails);
+      setCurrentIndex(nextIndex);
+    }
+  };
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
+  
   useEffect(() => {
     fetch('http://localhost:5173/api/v1/playlist')
       .then(response => {
@@ -42,6 +75,8 @@ export default function MusicPlayer() {
   };
   const handleSongSelect = async (song: Song) => {
     const fullDetails = await fetchSongDetails(song.id);
+    const selectIndex = songs.findIndex(s => s.id === song.id);
+    setCurrentIndex(selectIndex);
     setCurrentSong(fullDetails);
   };
 
@@ -53,6 +88,16 @@ export default function MusicPlayer() {
             song={currentSong}
             isPlaying={isPlaying}
             onPlayPause={handlePlayPause}
+            isFirstSong={currentIndex === 0}
+            isLastSong={currentIndex === songs.length - 1}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+            volume={volume}
+            onVolumeChange={handleVolumeChange}
+            playbackSpeed={playbackSpeed}
+            onSpeedChange={handleSpeedChange}
+            isShuffled={isShuffled}
+            onShuffleToggle={() => setIsShuffled(!isShuffled)}
           />
         </div>
         <div className="border rounded-lg p-6 bg-white shadow-md">
@@ -65,4 +110,4 @@ export default function MusicPlayer() {
       </div>
     </div>
   );
-}
+  };

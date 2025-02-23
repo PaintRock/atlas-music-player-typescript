@@ -1,7 +1,15 @@
 import React from 'react';
-import { Volume2 } from 'lucide-react';
+import { Volume, Volume2 } from 'lucide-react';
 
-export default function VolumeControls() {
+interface VolumeControlsProps {
+    volume: number;
+    onVolumeChange: (volume: number) => void;
+}
+
+export default function VolumeControls( { 
+    volume,
+    onVolumeChange,
+}: VolumeControlsProps) {
     return (
         <div className="w-full flex items-center gap-6 px-4">
             <Volume2 size={50} className="text-gray-600" />
@@ -10,8 +18,10 @@ export default function VolumeControls() {
             className="w-full h-5 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             min="0"
             max="100"
-            defaultValue="50"
+            volume={volume}
+            onChange={(e) => onVolumeChange(Number(e.target.value))}
             />
+            <span className="text-sm text-gray-600 w-8">{volume}</span>
         </div>
     );
 };
