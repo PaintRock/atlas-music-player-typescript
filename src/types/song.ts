@@ -5,6 +5,11 @@ export interface Song {
   artist: string;
   genre: string;
   duration: number;
+}
+
+   
+
+export interface Song extends PlaylistSong {
   cover?: string;   
-  song?: string;     
+  song?: string;    
 }

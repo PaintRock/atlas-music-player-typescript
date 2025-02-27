@@ -12,6 +12,7 @@ export default function PlayList({ songs, currentSong, onSongSelect }: PlayListP
     return (
         <div className="border rounded-lg overflow-hidden">
             <h2 className="flex px-4 py-3 font-bold border-b text-6x1">PLAYLIST</h2>
+            <div className="overflow-y-auto max-h-[500px]">
             {songs.map((song) => (
                 <PlayListItem
                     key={song.id}
@@ -19,10 +20,11 @@ export default function PlayList({ songs, currentSong, onSongSelect }: PlayListP
                     className={currentSong?.id === song.id ? 'bg-eucalyptus-50' : ''}
                     onClick={() => {
                         console.log('Selecting song:', song); // Debug click handler
-                        onSongSelect(song)}
-                    }
+                        onSongSelect(song);
+                    }}
                 />
             ))}
+        </div>
         </div>
     );
 }

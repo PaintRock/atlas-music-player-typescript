@@ -2,17 +2,22 @@ import { useState, useEffect } from "react";
 import PlayList from "./PlayList";
 import CurrentlyPlaying from "./CurrentlyPlaying";
 import { Song } from '../types/song';
+import {PlaylistSong, Song} from '../types/song';
 
 export default function MusicPlayer() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [volume, setVolume] = useState(50);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [isShuffled, setIsShuffled] = useState(false);
   
-  
+  const handleShuffleToggle = () => {
+    setIsShuffled(!isShuffled);
+  };
+
   const handleSpeedChange = (newSpeed: 0.5 | 1 | 2) => {
     setPlaybackSpeed(newSpeed);
   };
@@ -45,6 +50,7 @@ export default function MusicPlayer() {
   };
   
   useEffect(() => {
+    setLoading(true);
     fetch('http://localhost:5173/api/v1/playlist')
       .then(response => {
         if (!response.ok) {
@@ -59,6 +65,7 @@ export default function MusicPlayer() {
           const fullDetails = await fetchSongDetails(data[0].id);
           setCurrentSong(fullDetails);
         }
+        setLoading(false);
       })
       .catch(error => console.error('Error fetching playlist:', error));
   }, []);

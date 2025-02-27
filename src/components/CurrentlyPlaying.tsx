@@ -18,6 +18,8 @@ interface CurrentlyPlayingProps {
     onVolumeChange: (volume: number) => void;
     playbackSpeed: 0.5 | 1 | 2;
     onSpeedChange: (speed: 0.5 | 1 | 2) => void;
+    isShuffled: boolean;
+    onShuffleToggle: () => void;
 }
 
 export default function CurrentlyPlaying({ 
@@ -31,7 +33,9 @@ export default function CurrentlyPlaying({
   volume,
   onVolumeChange,
   playbackSpeed,
-  onSpeedChange
+  onSpeedChange,
+  isShuffled,
+  onShuffleToggle
  }: CurrentlyPlayingProps) {
     return (
     <div className= "flex flex-col gap-6">
@@ -46,8 +50,8 @@ export default function CurrentlyPlaying({
           onNext={onNext} 
           playbackSpeed={playbackSpeed}
           onSpeedChange={onSpeedChange}
-          isShuffled={false}
-          onShuffleToggle={() => {}}
+          isShuffled={isShuffled}
+          onShuffleToggle={onShuffleToggle}
         />
         <VolumeControls 
           volume={volume}
